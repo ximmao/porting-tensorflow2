@@ -265,6 +265,7 @@ def train(bad_mode, batch_size=32, num_runs=1, num_episodes=5000,
                     (rewards - tf.stop_gradient(baseline_0)) * log_p0_train)
             pg_final += tf.reduce_mean(
                     (rewards - tf.stop_gradient(baseline_1)) * log_p1_train)
+            pg_final *= -1
 
             # Baseline loss.
             total_baseline_loss = tf.reduce_mean(tf.square(rewards - baseline_0))
@@ -277,7 +278,7 @@ def train(bad_mode, batch_size=32, num_runs=1, num_episodes=5000,
 
         #TODO this not yet works
         opt_policy_0.apply_gradients(
-                    zip(policy_grad_0, tf.reshape(weights_0, [-1])))
+                    zip([policy_grad_0], [weights_0]))
         opt_policy_1.apply_gradients(
                     zip(policy_grad_1, net_policy_1.trainable_variables))
         opt_value_0.apply_gradients(
