@@ -139,7 +139,6 @@ def train(bad_mode, batch_size=32, num_runs=1, num_episodes=5000,
     net_policy_1 = Param_dict['net_policy_1']
     net_value_1 = Param_dict['net_value_1']
 
-    @tf.function
     def train_epoch(input_0, input_1, payoff_tensors):
         with tf.GradientTape(persistent=True) as tape:
             # counterfactual actions
@@ -330,7 +329,7 @@ if __name__ == "__main__":
     else:
         num_runs = 30
         num_episodes = 15000
-        num_readings = 100
+    num_readings = 100
 
     rewards_by_bad_mode = {}
     for bad_mode in range(3):
@@ -354,7 +353,7 @@ if __name__ == "__main__":
         sem = rewards.std(axis=0) / np.sqrt(num_runs)
         plt.plot(steps, mean, label=mode_labels[bad_mode])
         plt.fill_between(steps, mean - sem, mean + sem, alpha=0.3)
-    plt.ylim(8, 9.7)
+    plt.ylim(7, 9.7)
     plt.legend()
-
+    plt.show()
     pass
